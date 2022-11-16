@@ -10,7 +10,7 @@
 <body>
     <div class="main-body">
 		<nav id="navbar">
-			<header id="nav-header">Max Mustermann</header>
+			<header id="nav-header">Johanna Abheiden</header>
             <a href="/" class="nav-link">
 				HOME</a>
 			<a href="./" class="nav-link">
@@ -20,17 +20,21 @@
 		</nav>
 
         <main id="main-doc">
-            <h1>
-            TITLE_1
-            </h1>
+          
             <section class="main-section" id="description">
                 <header>
-                    Project Description
+                    Dancing Rings 
                 </header>
                 <p>
-                    Please explain about your project here and put an image that shows some design iterations like the one below. Note that it needs to be one single image. Please combine some shots from different design iterations. The following text is only a random example. This geometry consists of rectangles spaced 1m apart along the x-axis. The rectangles have the same height and width but their orientation angle changes by a total of 90 degrees along the length of the resulting geometry, this creates a twist.
-                </p>
-                <img src="../images/design_iterations.jpg" alt="Design Iterations">
+
+The base idea of the design is creating ring geometries which tansform depending on the parameters of the inner radius, outer radius and rotation. While looping through the geometry.parameters, the values of the innerRadius, outerRadius  and the sum of both parameters define the xyz position of every ring. The idividual rotation of each ring is based on its list index value in the ring list and the rotation parameter. The rings can be scaled by a z factor. The aim of the design is to create a huge variety of geometric constellations with only a small change in parameters. 
+                <img src="../images/Bild 1.jpeg" style="position:relative; top: -40px; left: -10px;
+                width: 750px; height: 400px"; alt="Design Iterations">
+                <img src="../images/Bild 3.jpeg" style="position:relative; top: -600px; left: 760px;
+                width: 400px; height: 400px"; alt="Design Iterations">
+                <img src="../images/Bild 5.jpeg" style="position:relative; top: -1160px; left: 1180px;
+                width: 400px; height: 400px"; alt="Design Iterations">
+                
             </section>
 
             <section class="main-section" id="algorithm">
@@ -40,19 +44,16 @@
                 <p>
                     Please explain a bit about the follwing flow-chart that describe your algorithm. The follwing is only a random flowchart as an example.
                 </p>
-                <img src="../images/flowchart.png" alt="Algorithm FlowChart">
-
+                <img src="../images/flowchart.png" ; alt="Design Iterations" alt="Algorithm FlowChart">
             </section>
-
             <section class="main-section" id="web-app">
-                <header>
+                <header >
                     Web App
                 </header>
                 <body>
-                    <p>
-                    Please add the instruction for using the app here. For example in this one, you can create control points that build a polygon by double clicking on the plane.  
-                    </p>
-                    <iframe class="responsive-iframe" src="../webapps/webapp_2.html"></iframe>
+                    <p >
+                    This app tries to show different ring constellations. This can be archieved by changing the different values of the sliders on the right top.
+                    <iframe class="responsive-iframe" src="../webapps/webapp_1.html"  ></iframe>
                     <p>
                         <br>
                     </p>
@@ -62,3 +63,4 @@
     </div>
 </body>
 </html>
+
