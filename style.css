@@ -7,7 +7,9 @@ div.main-body {
 
 nav#navbar {
 	grid-area: navbar;
-	position: fixed;
+	position: relative;
+	top: 300;
+	left: 175
 }
 
 header#nav-header{
@@ -44,21 +46,27 @@ nav#navbar a:hover:not(.active) {
 
 main#main-doc {
 	grid-area: mainContent;
-	width: 70vw
+	width: 70vw;
+	position: relative;
+	left: -125px; 
+	top: 600px
 }
 
 header {
 	font-size: 1.5rem;
-	font-weight: bold;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: thin;
 	user-select: none;
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	-ms-user-select: none;
 }
 
+
 h1 {
-	font-size: 2rem;
-	font-weight: bold;
+	font-size: 1.5rem;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: thin;
 	user-select: none;
 	-moz-user-select: none;
 	-webkit-user-select: none;
@@ -75,15 +83,20 @@ code {
 
 #web-app{
     width: 70vw;
-    height: 50vh
+    height: 50vh;
+	left: 30vw;
+	margin-bottom: 80vw
 }
 
 #home-page{
-	width: 75vw
+	width: 50vw;
+	height: 50vw
 }
 
 img{
-	margin-bottom: 2em
+	margin-bottom: 2em;
+	margin-top: 10em;
+	margin-right: 3000em
 }
 
 p {
@@ -95,7 +108,14 @@ p {
   }
 
 .responsive-iframe {
-width: 70vw;
-height: 40vw;
-margin-bottom: 5em
+	left: -100vw;
+	height: 30vw ;
+	width: 70vw;
+	margin-top: 0.5em
+}
+
+header#p1 {
+	position: relative;
+	left: 30vw;
+	top: 1000vw
 }
