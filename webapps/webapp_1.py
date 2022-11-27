@@ -68,16 +68,15 @@ def main():
 
     for i in range(geom1_params.y, geom1_params.x):
         geom = THREE.RingGeometry.new(geom1_params.innerRadius,geom1_params.outerRadius,geom1_params.thetaSegments)
-
         geom.translate(geom1_params.innerRadius*i, geom1_params.outerRadius*i,((geom1_params.innerRadius+geom1_params.outerRadius)*i)/geom1_params.x) 
         geom.rotateY(math.radians(geom1_params.rotation)/geom1_params.x*i)
-        geom.scale(geom1_params.z*geom1_params.x, geom1_params.z*geom1_params.x, geom1_params.z*geom1_params.x)
-        geom.scale(geom1_params.z*geom1_params.y, geom1_params.z*geom1_params.y, geom1_params.z*geom1_params.y)
+        geom.scale(geom1_params.z*geom1_params.x, geom1_params.z*geom1_params.x, geom1_params.z*geom1_params.x)  
 
         ring = THREE.Mesh.new(geom, material)
         rings.append(ring)
         scene.add(ring) 
 
+    
         edges = THREE.EdgesGeometry.new( ring.geometry )
         line = THREE.LineSegments.new( edges, line_material)
         ring_lines.append(line)
@@ -97,7 +96,6 @@ def main():
     param_folder.add(geom1_params, 'x', 0,50,1)
     param_folder.add(geom1_params, 'y', -50, -2, 1)
     param_folder.add(geom1_params, 'z', -0.6,0.6,0.01)
-    #param_folder.add(geom1_params, 'rotation', 0,180)
     param_folder.open()
     
     #-----------------------------------------------------------------------
