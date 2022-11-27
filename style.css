@@ -74,6 +74,7 @@ h1 {
 	margin-bottom: 0.25em
 }
 
+
 code {
 	background-color: #CCC;
 	display: block;
@@ -93,6 +94,12 @@ code {
 	height: 50vw
 }
 
+.grid-container {
+	display: grid;
+	grid-template-columns: auto auto auto auto;
+}
+
+
 img{
 	margin-bottom: 2em;
 	margin-top: 10em;
@@ -104,14 +111,16 @@ p {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	-ms-user-select: none;
-	margin-bottom: 2em
+	margin-bottom: 2em;
+	text-align: justify;
   }
 
 .responsive-iframe {
-	left: -100vw;
-	height: 30vw ;
-	width: 70vw;
-	margin-top: 0.5em
+	grid-row: 1;
+	align-self: start;
+	height: 20vw ;
+	width: 50vw;
+
 }
 
 header#p1 {
