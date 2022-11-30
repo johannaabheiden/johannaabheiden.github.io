@@ -11,8 +11,10 @@ geom1_params=  {
         "x": 5,
         "angle1":1.5,
         "angle2":3,
-        "translation_z":0
-      
+        "translation_z":0,
+        "moving_z": -2,
+        "amountz": 2,
+        "amountx": 4      
 }
 
 geom1_params = Object.fromEntries(to_js(geom1_params))
@@ -38,10 +40,34 @@ def main():
     back_color = THREE.Color.new(0.1,0.1,0.1)
     scene.background = back_color
     camera = THREE.PerspectiveCamera.new(1000, window.innerWidth/window.innerHeight, 0.6, 1000)
-    camera.position.z = 600
-    camera.position.y = -300
+    camera.position.z = 10
+    camera.position.y = -30
     camera.position.x = 30
     scene.add(camera)
+
+    #colors
+
+    global color1, color2
+
+    color1 =  THREE.Color.new('rgb(600, 127, 64)')
+    color2 = THREE.Color.new('rgb(0,0,255)')
+
+    # defintion materials
+
+    global line_material1, line_material2 
+
+    line_material1 = THREE.LineBasicMaterial.new()
+    line_material1.color = color2
+    line_material1.transparent = True
+    line_material1.opacity = 0.6
+
+    line_material2 = THREE.LineBasicMaterial.new()
+    line_material2.color = color1
+    line_material2.transparent = True
+    line_material2.opacity = 0.6
+
+    
+
 
     # Graphic Post Processing
     global composer
@@ -51,20 +77,9 @@ def main():
     resize_proxy = create_proxy(on_window_resize)
     window.addEventListener('resize', resize_proxy) 
     #-----------------------------------------------------------------------
-    # YOUR DESIGN / GEOMETRY GENERATION
-    # Geometry Creation
+    
+    design()
 
-    global max_iterations
-
-   
-    max_iterations = geom1_params.x
-    my_molecule_system = system(0, max_iterations, "X")
-        
-       
-    draw_system((my_molecule_system), THREE.Vector3.new(0,0,0))
-
-
-    console.log(my_molecule_system)
     #update_draw_system((my_axiom_system), THREE.Vector3.new(0,0,0))
 
     #-----------------------------------------------------------------------
@@ -79,6 +94,9 @@ def main():
     param_folder.add(geom1_params,'angle1', 1,2,0.1)
     param_folder.add(geom1_params, 'angle2', 2,3,0.1)
     param_folder.add(geom1_params, 'translation_z',0,0.06,0.01)
+    param_folder.add(geom1_params, 'moving_z', -20, 0, 1)
+    param_folder.add(geom1_params, 'amountz', 0, 10, 1)
+    
    
     param_folder.open()
     
@@ -87,13 +105,28 @@ def main():
     render()
     
 #-----------------------------------------------------------------------
+
+def design():
+
+    # YOUR DESIGN / GEOMETRY GENERATION
+    # Geometry Creation
+    global max_iterations, moving_z, amountz
+    max_iterations = geom1_params.x
+    moving_z = geom1_params.moving_z
+    amountz = geom1_params.amountz
+   
+
+    my_molecule_system = system(0, max_iterations, "X")   
+    for i in range(amountz):
+            draw_system((my_molecule_system), THREE.Vector3.new(0,moving_z*i,0))
+           
+
 # HELPER FUNCTIONS
 # Define RULES in a function which takes one SYMBOL and applies rules generation
 def generate(symbol):
     if symbol == "X":
         return "X+X-XX"
-    elif symbol == "F":
-        return "FF"
+
     elif symbol == "+":
         return "+"
     elif symbol == "-":
@@ -105,12 +138,12 @@ def draw_system(molecule, start_pt):
 
     global lines, angle1, angle2, translationvector
     translationvector = geom1_params.translation_z
-    move_vec = THREE.Vector3.new(10,0,0)
+    move_vec = THREE.Vector3.new(1,0,0)
     lines = []
 
     for symbol in molecule:
 
-        if symbol == "F" or symbol == "X":
+        if symbol == "X":
             old = THREE.Vector3.new(start_pt.x, start_pt.y, start_pt.z)
             new_pt = THREE.Vector3.new(start_pt.x, start_pt.y, start_pt.z)
             new_pt = new_pt.add(move_vec)
@@ -136,21 +169,17 @@ def draw_system(molecule, start_pt):
 
         line_geom = THREE.BufferGeometry.new()
         points = to_js(points)
-        geom = THREE.SphereGeometry.new(2,30, 20)
+        geom = THREE.SphereGeometry.new(0.2,10, 10)
         geom.translate(points[0].x, points[0].y, points[0].z)
-        cube = THREE.Mesh.new(geom)
+        sphere = THREE.Mesh.new(geom)
         
-        line_material = THREE.LineBasicMaterial.new()
-        line_material.transparent = True
-        line_material.opacity = 0.6
-        line_material.color = THREE.Color.new('rgb(600, 127, 64)')
-        edges = THREE.EdgesGeometry.new(cube.geometry)
-        edgeline = THREE.LineSegments.new(edges, line_material)
+        
+        edges = THREE.EdgesGeometry.new(sphere.geometry)
+        edgeline = THREE.LineSegments.new(edges, line_material2)
         scene.add(edgeline)
 
-        line_geom.setFromPoints( points )
-        
-        vis_line = THREE.Line.new( line_geom, line_material )       
+        line_geom.setFromPoints( points ) 
+        vis_line = THREE.Line.new( line_geom, line_material1 )       
         scene.add(vis_line)
 
         
@@ -166,15 +195,12 @@ def system(current_iteration, max_iterations, molecule):
 
 
 def update_system():
+    global max_iterations, moving_z, amountz, scene
 
-    global max_iterations, scene
-
-    if max_iterations != geom1_params.x or angle1 != geom1_params.angle1 or angle2 != geom1_params.angle2 or translationvector != geom1_params.translation_z:
+    if max_iterations != geom1_params.x or angle1 != geom1_params.angle1 or angle2 != geom1_params.angle2 or translationvector != geom1_params.translation_z or moving_z != geom1_params.moving_z or geom1_params.amountz != amountz:
         scene.clear()
-        max_iterations = geom1_params.x
-        my_molecule_system = system(0, max_iterations, "X")
-        draw_system((my_molecule_system), THREE.Vector3.new(0,0,0))
-
+        design()
+    
 
 # Simple render and animate
 def render(*args):
