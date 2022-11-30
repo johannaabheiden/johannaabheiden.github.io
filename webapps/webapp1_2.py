@@ -15,10 +15,11 @@ geom1_params = {
 
         "x":10,
         "y":10,
-        "s":10,
         "rotation1":160,
-        "rotation2":-160,
-        "distance":5
+        "distance":5,
+        "innerRadius":0.5,
+        "outerRadius": 1.0,
+        "scale": 5
 }
 
    
@@ -43,12 +44,11 @@ def main():
     back_color = THREE.Color.new(0.1,0.1,0.1)
     scene.background = back_color
     camera = THREE.PerspectiveCamera.new(100, window.innerWidth/window.innerHeight, 0.1, 500)
-    camera.position.z = 400
-    camera.position.x = 100
-    camera.position.y = 300
+    camera.position.z = 100
+    camera.position.x = 10
+    camera.position.y = 10
 
     scene.add(camera)
-
 
     # Graphic Post Processing
     global composer
@@ -60,7 +60,15 @@ def main():
     #-----------------------------------------------------------------------
   
     # Geometry Creation
-    generate_ring()
+
+    global x, y
+    x = geom1_params.x
+    y = geom1_params.y
+    
+
+    generate_ring(1)
+    generate_ring(-1)
+    
 
      #-----------------------------------------------------------------------
     # USER INTERFACE
@@ -71,22 +79,15 @@ def main():
     gui = window.dat.GUI.new()
     param_folder = gui.addFolder('Parameters')
     
-    param_folder.add(geom1_params, 'x', 0,50,1)
-    param_folder.add(geom1_params, 'y', 0,50,1)
+    param_folder.add(geom1_params, 'x', 0,20,1)
+    param_folder.add(geom1_params, 'y', 0,20,1)
     param_folder.add(geom1_params, 'rotation1', 0,200,1)
     param_folder.add(geom1_params, 'distance', 0,20,1)
+    param_folder.add(geom1_params, 'innerRadius', 0,5,0.1)
+    param_folder.add(geom1_params, 'outerRadius', 0,5,0.1)
    
     param_folder.open()
-
-    global material, line_material
-    
-    material = THREE.MeshBasicMaterial.new()
-    material.transparency = True
-    material.opactity =0.2
-    material.color = THREE.Color.new("rgb(80%, 50%, 50%)")
-
-    line_material = THREE.LineBasicMaterial.new()
-    line_material.color = THREE.Color.new("rgb(80%, 50%, 50%)")
+   
     #-----------------------------------------------------------------------
     # RENDER + UPDATE THE SCENE AND GEOMETRIES
     render()
@@ -95,65 +96,57 @@ def main():
 
    
    
-def generate_ring(): 
+def generate_ring(direction): 
 
-    global rotation1, rotation2, distance
+    global rotation1, rotation2, distance, scale, innerRadius, outerRadius
 
-    rotation1 = geom1_params.rotation1
-    rotation2 = geom1_params.rotation2
+    rotation1 = geom1_params.rotation1  
     distance = geom1_params.distance
+    scale = geom1_params.scale
+    innerRadius = geom1_params.innerRadius
+    outerRadius = geom1_params.outerRadius
 
-   
+    x = geom1_params.x
+    y = geom1_params.y
+
+
+    
     lines = []
 
 
-    for i in range(geom1_params.x):
+    for i in range(x):
       
-        geom = THREE.RingGeometry.new(5,2.5,100)
-        geom.translate(distance*i, distance *i,(distance)*i/geom1_params.x)   
-        geom.rotateY(math.radians(rotation1)/geom1_params.x*i)
-
-        geom3 = THREE.BufferGeometry.new()
-        geom3.copy(geom)
-        geom3.translate(-1*distance*i, -1*distance *i,-1*(distance)*i/geom1_params.x) 
-        geom3.rotateY(math.radians(rotation1)/geom1_params.x*i) 
-
+        geom = THREE.RingGeometry.new(innerRadius,outerRadius,100)
+        geom.translate(direction*distance*i,direction*distance*i,direction*distance/x) 
+        geom.rotateY(math.radians(rotation1)/x*i)
+       
         
-        for j in range(geom1_params.y):
+        for j in range(y):
 
             geom2 = THREE.BufferGeometry.new()
             geom2.copy(geom)
-            geom2.translate(distance*i, distance*i*j,(distance)*j*i/geom1_params.x) 
-            geom2.rotateY(math.radians(rotation1)/geom1_params.x*i*j)
+            geom2.translate(direction*distance*i*j,direction*distance*i*j,direction*distance/x) 
+            geom2.rotateY(math.radians(rotation1)/x*i*j)
+           
 
-            geom4 = THREE.BufferGeometry.new()
-            geom4.copy(geom3)
-            geom4.translate(-1*distance*i, -1*distance *i*j,-1*(distance)*j*i/geom1_params.x) 
-            geom4.rotateY(math.radians(rotation1)/geom1_params.x*i*j)
-            
-
+            global material, line_material
+    
             material = THREE.MeshBasicMaterial.new()
             material.transparency = True
-            material.opactity =0.2
-           
-            
-          
+            material.opactity = 0.6
+            material.color = THREE.Color.new("rgb(80%, 50%, 50%)")
 
             line_material = THREE.LineBasicMaterial.new()
-           
+            line_material.color = THREE.Color.new("rgb(80%, 50%, 50%)")
 
+          
             ring = THREE.Mesh.new(geom, material)
+            rings.append(ring)
+            scene.add(ring)
             ring2 = THREE.Mesh.new(geom2, material)
-            ring3 = THREE.Mesh.new(geom3, material)
-            ring4 = THREE.Mesh.new(geom4, material)
-           
+            scene.add(ring2)
+            rings.append(ring2)
             
-
-            """console.log(pos)"""
-            group = THREE.Group.new(ring, ring2, ring3, ring4)
-            scene.add(group)
-            rings.append(group)
-
             edges = THREE.EdgesGeometry.new( ring.geometry )
             line = THREE.LineSegments.new( edges, line_material)
             ring_lines.append(line)
@@ -164,18 +157,6 @@ def generate_ring():
             ring_lines.append(line)
             scene.add( line )
 
-            edges = THREE.EdgesGeometry.new( ring3.geometry )
-            line = THREE.LineSegments.new( edges, line_material)
-            ring_lines.append(line)
-            scene.add( line )
-
-            edges = THREE.EdgesGeometry.new( ring4.geometry )
-            line = THREE.LineSegments.new( edges, line_material)
-            ring_lines.append(line)
-            scene.add( line )
-
-
-    
 #-----------------------------------------------------------------------
 # HELPER FUNCTIONS
 # Update rings
@@ -183,15 +164,11 @@ def update_rings():
     global rings, ring_lines, material, line_material, vis_line, lines
     if len(rings) != 0:
         
-        if len(rings) != geom1_params.x * geom1_params.y or geom1_params.rotation1 != rotation1 or geom1_params.rotation2 != rotation2 or geom1_params.distance !=distance :
-            for group in rings: scene.remove(group)
-            for line in ring_lines: scene.remove(line)
-            
-            rings = []
-            ring_lines = []
-            #lines = []
-            
-            generate_ring()
+        if x != geom1_params.x or y !=geom1_params.y or geom1_params.rotation1 != rotation1 or geom1_params.distance !=distance or geom1_params.outerRadius != outerRadius or geom1_params.innerRadius != innerRadius or geom1_params.scale != scale:
+            scene.clear()
+         
+            generate_ring(1)
+            generate_ring(-1)
             
                     
 
