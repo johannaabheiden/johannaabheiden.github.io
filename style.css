@@ -118,8 +118,8 @@ p {
 .responsive-iframe {
 	grid-row: 1;
 	align-self: start;
-	height: 20vw ;
-	width: 50vw;
+	height: 50vw ;
+	width: 80vw;
 
 }
 
