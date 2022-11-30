@@ -26,11 +26,23 @@
             <section class="main-section" id="description">
                 
                 <p>
-                    The main idea of the design is to create a huge variety of geometries by changing only a few parameters. The first inpsiration for the recursive was the koch curve, which was modified in the following steps. The geometry size is determined by the number of maximal iterations of the recursive. The structure becomes threedimensional when the parametervalues of the vector are changed. In the further development of the design the goal would be to let the structure become more controllable by the user.
+                    The first inspiration of the geoemtry was the fractal geometry koch curve and in the following the strcuture was generated
+                    through a recusive function. Fot the interaction between user and geoemtry, a slider interface display allows to clone the structure
+                    in a z direction. The geoemtry dimension is adjustable, by changing the the max_iterations value. This value refers to the
+                    maximal count of iterations until the recursion will stop calling itself. Two different angle parameters are linked to the definition
+                    of the vector for defining the base geometry. When changing the translate.z value the app user has the chance to work with a
+                    treedimensional geometry. The amount.paramter let the user generate clones of the structure in z direction and the move_z
+                    slider defines the distance in which the geometry moves. The code itself is structured in five definitons, that are iterated as long
+                    as the maximal number of iterations is not reached. First the design definition calls functions and is integrated in the main, the
+                    system defintion defines the recursive, that recalls as long as the maximum of iterations is not reached. In the following the
+                    generate() function contains the defintion of different symbols. The draw_function finally generates the spheres and lines.
                     <img src="../images/Bild 2.5.png" alt="Algorithm FlowChart">
                     <img src="../images/Bild 2.1.png" alt="Algorithm FlowChart">
                     <img src="../images/Bild 2.2.png" alt="Algorithm FlowChart">
-                    <img src="../images/Bild 2.3.png" alt="Algorithm FlowChart">
+                    <img src="../images/Bild 2.3.png" alt="Algorithm FlowChart"> 
+                    <img src="../images/Bild 2.5.png" alt="Algorithm FlowChart">
+                    <img src="../images/flowchart.2.jpg" alt="Algorithm FlowChart"style= "height: 1900px ; width: 800pxw">
+
                 </p>
         
             </section>
@@ -40,8 +52,7 @@
                     Algorithm
                 </header>
                 <p>
-                    Please explain a bit about the follwing flow-chart that describe your algorithm. The follwing is only a random flowchart as an example.
-                    
+                   
                 <br>
                 </p>
                 
@@ -53,7 +64,13 @@
                 </header>
                 <body>
                     <p>
-                    
+
+                   
+                        The code itself is structured in five definitons, that are iterated as long
+                        as the maximal number of iterations is not reached. First the design definition calls functions and is integrated in the main, the
+                        system defintion defines the recursive, that recalls as long as the maximum of iterations is not reached. In the following the
+                        generate() function contains the defintion of different symbols. The draw_function finally generates the spheres and lines.
+                       
                     </p >
                     <iframe class="responsive-iframe" src="../webapps/webapp_2.html"></iframe>
                 </body>
