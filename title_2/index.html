@@ -16,33 +16,21 @@
 			<a href="../title_1" class="nav-link">
 				ring.geometry</a>
 			<a href="./" class="nav-link">
-				molecules</a>
+                triangles
+				</a>
 		</nav>
 
         <main id="main-doc">
             <h1>
-                molecules
+                triangles
             </h1>
             <section class="main-section" id="description">
                 
                 <p>
-                    The first inspiration of the geoemtry was the fractal geometry koch curve and in the following the strcuture was generated
-                    through a recusive function. Fot the interaction between user and geoemtry, a slider interface display allows to clone the structure
-                    in a z direction. The geoemtry dimension is adjustable, by changing the the max_iterations value. This value refers to the
-                    maximal count of iterations until the recursion will stop calling itself. Two different angle parameters are linked to the definition
-                    of the vector for defining the base geometry. When changing the translate.z value the app user has the chance to work with a
-                    treedimensional geometry. The amount.paramter let the user generate clones of the structure in z direction and the move_z
-                    slider defines the distance in which the geometry moves. The code itself is structured in five definitons, that are iterated as long
-                    as the maximal number of iterations is not reached. First the design definition calls functions and is integrated in the main, the
-                    system defintion defines the recursive, that recalls as long as the maximum of iterations is not reached. In the following the
-                    generate() function contains the defintion of different symbols. The draw_function finally generates the spheres and lines.
-                    
-                    <img src="../images/Bild 2.5.png" alt="Algorithm FlowChart">
-                    <img src="../images/Bild 2.1.png" alt="Algorithm FlowChart">
-                    <img src="../images/Bild 2.2.png" alt="Algorithm FlowChart">
-                    <img src="../images/Bild 2.3.png" alt="Algorithm FlowChart"> 
-                    <img src="../images/Bild 2.5.png" alt="Algorithm FlowChart">
-                    <img src="../images/flowchart.2.jpg" alt="Algorithm FlowChart"style= "height: 1900px ; width: 800pxw">
+                    This design tries to show the potential of principles of fractal geometries for architectual applications. The triangular sructure divides itself per iteration in further triangular structures. To make the app become more interactive and changeable for the app user, two sliders are implemented. The first one allows to change the number of max_iterations for the recursive function of the code and the second let the user change the position of a vertex on every line, that becomes the start point of the next triangle division.
+                    In technical terms, the code is structured in three definitions. The definition of the system (the recursive function), the draw_system definition, where the geometry is generated and the defintion of symbols, which seperates the different steps of the draw_system function. The iteration repeats as long as the maximum number is not reached. A final update function cleans the scene, when the sliders and the existing variables of the scene are not equal and restarts the geometry generation.
+                    <img src="../images/Bild 2.2.png" alt="Algorithm FlowChart" width="1500" height="2000">
+                    <img src="../images/flowchart2.png" alt="Algorithm FlowChart">
 
                 </p>
         
@@ -61,14 +49,10 @@
 
             <section class="main-section" id="web-app">
                 <header>
-                    Web App
+                    
                 </header>
                 <body>
                     <p>
-
-                   
-                        
-                       
                     </p >
                     <iframe class="responsive-iframe" src="../webapps/webapp_2.html"></iframe>
                 </body>
