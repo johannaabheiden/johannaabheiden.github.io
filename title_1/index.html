@@ -16,7 +16,7 @@
 			<a href="./" class="nav-link">
 				ring.geometry</a>
 			<a href="../title_2" class="nav-link">
-				molecules</a>
+				triangles</a>
 		</nav>
 
         <main id="main-doc">
@@ -26,40 +26,34 @@
                     ring.geometry
                 </header>
                 <p>
-                    The base idea of the design is creating a ring geometry which tansforms based on the parameters of the inner radius, outer radius and rotation. Whi-le looping through the geometry.parameters, the values of the innerRadius, outerRadius and the sum of both parameters define the xyz translation of every ring. The idividual rotation of each ring is based on its list index value in the ring list and the rotation parameter. The rings can be scaled by a z factor. To qualify it a useful tool for a potential app user, the code creates a huge variety of geometric constellations with only a small change in parameters. Therefore every paramteter can be controlled via the app slider interface.The code itself contains at the beginning the inclusion of the necessary libraries, the creation of the empty lists, and in the following the dictionary for the geometry parameters. In the first for loop a ring is created, based on the geometry parameters of the dictionary. To make it possible for a user to change the geometry, two conditional statementent are necessary. The first one checks if the number of geometries, controlled by the user is not equal to zero. The second statement checks if the lenght of the current number of rings is equal to the current number of geometries that the user defines. In this case, the current number and configuration doesn‘t change. Other-wise, the old geometries are removed and the new rings will be created.
-
-                <img src="../images/Bild 1.jpeg" class=".img2"; alt="Design Iterations">
-                <img src="../images/Bild 3.jpeg" class=".img3"; alt="Design Iterations">
-                <img src="../images/Bild 5.jpeg" class=".img4"; alt="Design Iterations">
+                    The base idea of the app is to show the design potential of for in for loops in codes for design compositions. Therefore, a simple ring design provides the base geometry. The ring was translated on the x and y axis with  a sin(x)  function that creates the waved appearance. The multiplication with a factor, allows the user to change the amplitude and discover different configurations by only a small change of the parameters.
+                    The code is structured in three main definitions: main(), generate_ring() and update(). In the generate function() with a nested loop inside a loop, the ring geometry is created and translated in three dimensions. Later a update function() checks if the lenght of rings is not zero, and regenerates, when the geom_params values are not equal to the assigned variables.
+                    
                 <img src="../images/Bild 1.1.png" class=".img4"; alt="Design Iterations">
                 <img src="../images/Bild 1.2.png" class=".img4"; alt="Design Iterations">
                 <img src="../images/Bild 1.3.png" class=".img4"; alt="Design Iterations">
+                <img src="../images/Bild1.4.png" class=".img4"; alt="Design Iterations">
+                
                 <P>
-                
-                
             </section>
-
             <section class="main-section" id="algorithm">
                 
-                <img class=".img1" src="../images/flowchart1.jpg" style= "height: 2300px ; width: 800pxw"
+                <img class=".img1" src="../images/flowchart1.png" 
             alt="Design Iterations" alt="Algorithm FlowChart">
-            </section>"""
+            </section>
             <section class="main-section" id="web-app">
                 <header >
-                    Web App
+                    
                 </header>
                 <body>
-                    <p >
-                    This app tries to show different ring constellations. This can be archieved by changing the different values of the sliders on the right top.                 
-                    <p>
+                    
                     <p>
                     </p>
                     </p>
                     
-                    <iframe class="responsive-iframe" src="../webapps/webapp_1.html"  ></iframe>
-                    <iframe class="responsive-iframe" src="../webapps/webapp_1_1.html"  ></iframe>
+                    
                     <iframe class="responsive-iframe" src="../webapps/webapp1-2.html"  ></iframe>
-
+                    
                     <p>
                     
                         <br>
