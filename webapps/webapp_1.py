@@ -35,26 +35,42 @@ def main():
 
     # Set up the scene
     scene = THREE.Scene.new()
-    back_color = THREE.Color.new("rgb(60,115,168)")
+    back_color = THREE.Color.new("rgb(160,160,160)")
     scene.background = back_color
-    camera = THREE.PerspectiveCamera.new(50, window.innerWidth/window.innerHeight, 1, 10000)
-    camera.position.set(-40,40,-40)
+    fog_color = THREE.Color.new("rgb(0,0,0)")
+    scene.fog = THREE.Fog.new(fog_color, 150,700)
+    camera = THREE.PerspectiveCamera.new(50, window.innerWidth/window.innerHeight, 1, 500)
+    camera.position.set(-60,80,-60)
     scene.add(camera)
 
-    # Set up lighting
+    #Set up Studio Scene
+    groundGeo = THREE.PlaneGeometry.new(5000,5000)
+    groundMat = THREE.MeshBasicMaterial.new ()
+    groundMat.color = THREE.Color.new("rgb(250,250,250)")
 
-    amb_light = THREE.AmbientLight.new(0xf0f0f0)
-    scene.add(amb_light)
-    light = THREE.SpotLight.new(0xffffff, 1.5 )
-    light.position.set( 0, 1500, 200 )
-    light.angle = math.pi * 0.2
-    light.castShadow = True
-    light.shadow.camera.near = 200
-    light.shadow.camera.far = 2000
-    light.shadow.bias = - 0.000222
-    light.shadow.mapSize.width = 1024
-    light.shadow.mapSize.height = 1024
-    scene.add( light )
+    ground = THREE.Mesh.new(groundGeo, groundMat)
+    ground.position.y = - 33
+    ground.rotation.x = - math.pi / 2
+    ground.receiveShadow = True
+    scene.add( ground )
+
+    
+    #Lighting
+    hemiLight = THREE.HemisphereLight.new( 0xffffff, 0x444444 )
+    hemiLight.position.set( 0, 100, 0 )
+    scene.add( hemiLight )
+
+    dirLight = THREE.DirectionalLight.new( 0xffffff )
+    dirLight.position.set( - 0, 40, 50 )
+    dirLight.castShadow = True
+    dirLight.shadow.camera.top = 50
+    dirLight.shadow.camera.bottom = - 25
+    dirLight.shadow.camera.left = - 25
+    dirLight.shadow.camera.right = 25
+    dirLight.shadow.camera.near = 0.1
+    dirLight.shadow.camera.far = 200
+    dirLight.shadow.mapSize.set( 1024, 1024 )
+    scene.add( dirLight )
 
     global geom_params
 
@@ -71,6 +87,7 @@ def main():
         "Attractor": buttonfunction4,
         "Attractor2": buttonfunctionattractor2,
         "triangles":buttonfunction3,
+        "finish it!": buttonfunctionfin,
     
         #walkerstepsizes
 
@@ -106,58 +123,11 @@ def main():
         #presentation
 
         "transparencysurface": 0.05, 
-        "removesurface": buttontransparencysurface,
-        "sceneaddsurface": buttonsceneaddsurface,
         "transparentlines": 0.3,
 
     }
 
     geom_params = Object.fromEntries(to_js(geom_params))
-
-
-    #defintiion meshmaterial
-
-    global meshmaterial
-
-    meshmaterial  = THREE.MeshBasicMaterial.new()
-    meshmaterial.side = 2
-    meshmaterial.transparent = True
-    meshmaterial.opacity = 0.3
-
-    global meshmaterial2
-
-    meshmaterial2 = THREE.MeshBasicMaterial.new()
-
-    meshmaterial2.side = 2
-    meshmaterial2.color = THREE.Color.new('rgb(255, 160, 122)')
-    meshmaterial2.transparent = True
-    meshmaterial2.opacity = 0.3
-
-    global linematerial1
-    linematerial1 = THREE.LineBasicMaterial.new()
-    linematerial1.transparent = True
-    linematerial1.opacity = 0.7
-    linematerial1.color = THREE.Color.new()
-    linematerial1.side = 2
-
-
-    #defintion linematerial   
-    global linematerial2
-    linematerial2 = THREE.LineBasicMaterial.new()
-    linematerial2.transparent = True
-    linematerial2.opacity = 0.7
-    linematerial2.color = THREE.Color.new('rgb(0, 255, 0)')
-    linematerial2.sie = 2
-
-
-    global linematerial3
-
-    linematerial3 = THREE.LineBasicMaterial.new()
-    linematerial3.transparent = True
-    linematerial3.opacity = 0.7
-    linematerial3.color = THREE.Color.new('rgb(37, 40, 80)')
-    linematerial3.side = 2
-
 
     #surfacedegrees
     global degree1, degree2, knots1, knots2
@@ -168,60 +138,70 @@ def main():
     knots2 = [0,0,0,0,0,1,1,1,1,1]
     knots2 = to_js(knots2)
 
-    
+    #gui creation
+    global folder1, folder2, folder3, folder4, folder5, folder6, gui
 
     gui = window.lil.GUI.new()
+    gui.title('CREATE YOUR OWN STRUCTURE !')
 
 
     #fractal1
 
-    folder1 = gui.addFolder('Fractal')
-    folder1.add(geom_params, 'fractal')
-    folder1.add(geom_params, 'fractalangle',0,15,1)
-    folder1.add(geom_params, 'branch1',0,50,1)
+    folder1 = gui.addFolder('1st way - design with fractals')
+    folder1.add(geom_params, 'fractalangle',0,15,1).name('angle of twigs')
+    folder1.add(geom_params, 'branch1',0,50,1).name('angle of the branch')
+    folder1.add(geom_params, 'fractal').name('create fractal !')
+    folder1.close()
 
     #fractal2
 
-    folder2 = gui.addFolder('Fractal2')
-    folder2.add(geom_params, 'fractal1')
-    folder2.add(geom_params, "triangles", 0,10,1)
+    folder2 = gui.addFolder('Fractal2').title('2nd - design a tree')
+    folder2.add(geom_params, 'fractal2angle1', 6, 8, 1).name('angle of the brachnes')
+    folder2.add(geom_params, 'fractal1').name('create a tree !')
+    folder2.close()
 
+    
     #walker
 
-    folder3 = gui.addFolder('Walker')
-    folder3.add(geom_params, 'walkerdesign')
-    folder3.add(geom_params, 'stepsizea', 0,5,1)
-    folder3.add(geom_params, 'stepsizeb', 0,5,1)
+    folder3 = gui.addFolder('3rd - let a walker design')
+    folder3.add(geom_params, 'stepsizea', 0,5,1).name('step size walker 1')
+    folder3.add(geom_params, 'stepsizeb', 0,5,1).name('step size walker 2')
+    folder3.add(geom_params, 'walkerdesign').name('create path !')
+    folder3.close()
 
 
     #attractor1
 
-    folder4 = gui.addFolder('Attractor - Material placement')
-    folder4.add(geom_params, 'Attractor')
-    folder4.add(geom_params, 'density1', 0, 0.1, 0.01)
-    folder4.add(geom_params, 'density2', 0,0.1,0.01)
-    folder4.add(geom_params, 'density3', 0,0.1, 0.01)
+    folder4 = gui.addFolder('4th - layer attractors')
+    folder4.add(geom_params, 'density1', 0, 0.1, 0.01).name('density in middle')
+    folder4.add(geom_params, 'density2', 0,0.1,0.01).name('density on edges')
+    folder4.add(geom_params, 'density3', 0,0.1, 0.01).name('density in middle')
+    folder4.add(geom_params, 'Attractor').name('create from attractors !')
+    folder4.close()
 
     #attractor2
 
-    folder5 = gui.addFolder('Attractor2 -Material placement')
-    folder5.add(geom_params, 'Attractor2')
-    folder5.add(geom_params, "densityregionA", 70, 120, 10)
-    folder5.add(geom_params, "densityregionB", 70, 120, 10)
-    folder5.add(geom_params, "densityregionC", 70, 120, 10)
-    folder5.add(geom_params, "densityregionD", 70, 120, 10)
+    folder5 = gui.addFolder('5th - zone attractos')
+    folder5.add(geom_params, "densityregionA", 0, 150, 10).name('region A')
+    folder5.add(geom_params, "densityregionB", 0, 150, 10).name('region B')
+    folder5.add(geom_params, "densityregionC", 0, 150, 10).name('region C')
+    folder5.add(geom_params, "densityregionD", 0, 150, 10).name('region D')
+    folder5.add(geom_params, 'Attractor2').name('create from attractors !')
+    folder5.close()
 
+    #TRIANGLES
 
-    #presentation
+    folder6 = gui.addFolder('6th - Sierpinski-triangle')
+    folder6.add(geom_params, "triangles", 0,10,1).name('create a triangle fractal !')
+    folder6.close()
 
-    folder3 = gui.addFolder('Presentation')
-    folder3.add(geom_params, 'transparentlines',0, 1, 0.1)
-    gui.add(geom_params, 'removesurface')
+    
     gui.add(geom_params, 'reset')
-    gui.add(geom_params, 'sceneaddsurface')
+    gui.add(geom_params, 'finish it!')
+    
 
 
-    gui.open()
+    gui.close()
 
 
     #list
@@ -295,6 +275,43 @@ def main():
     transparentlines = geom_params.transparentlines
 
 
+    #-----------------------------------------------------------------------------------------------
+    #define Colors / Materials
+
+    global meshplane
+
+    meshplane = THREE.MeshPhongMaterial.new()
+    meshplane.color = THREE.Color.new("rgb(0,50,100)")
+    meshplane.side = 2
+    meshplane.transparent = True
+    meshplane.opacity = transparency
+
+    #Sphere Color Proporties
+    global spheredef
+    spheredef = THREE.MeshPhongMaterial.new()
+    spheredef.color = THREE.Color.new("rgb(50,50,50)")
+    spheredef.side = meshplane.side
+    spheredef.transparent = meshplane.transparent
+    spheredef.opacity = transparency*2.5
+
+
+    global linematerial
+    linematerial = THREE.LineBasicMaterial.new()
+    linematerial.color = THREE.Color.new("rgb(20,20,20)")
+    linematerial.transparent = True
+    linematerial.opacity = transparency*2.5
+    linematerial.side = 2
+
+    global linematerialfinal
+
+    linematerialfinal = THREE.LineBasicMaterial.new()
+    linematerialfinal.color = THREE.Color.new("rgb(40,40,40)")
+    linematerialfinal.transparent = True
+    linematerialfinal.opacity = transparentlines
+    linematerialfinal.side = 2
+
+
+    #-----------------------------------------------------------------------------------------------
    
     global field_length, field_width
 
@@ -445,13 +462,7 @@ def basicsurface(transparency):
 
    #baseparamtericsurface---------------------------------------------------------
     
-    global meshplane
-
-    meshplane = THREE.MeshPhongMaterial.new()
-    meshplane.side = 2
-    meshplane.transparent = True
-    meshplane.opacity = transparency
-    
+     
  
     geometry = THREE.ParametricGeometry.new(getPoints, 30,30)
     geometry_mesh = THREE.Mesh.new(geometry, meshplane)
@@ -460,6 +471,7 @@ def basicsurface(transparency):
    
     surfaces.append(geometry_mesh)
 
+    
 
     #define handles of the surface-------------------------------------------------
     global curve_handles, handles
@@ -473,7 +485,7 @@ def basicsurface(transparency):
         
         for curve_handle in points:
             
-            handle = THREE.Mesh.new( sphere_geometry, meshplane )
+            handle = THREE.Mesh.new( sphere_geometry, spheredef )
 
             handle.position.copy(curve_handle)
 
@@ -494,13 +506,6 @@ def basicsurface(transparency):
     second_target = None
     
     CURVE_SEGMENTS = 50
-
-    global linematerial
-    linematerial = THREE.LineBasicMaterial.new()
-    linematerial.transparent = True
-    linematerial.opacity = transparency
-
-
 
     for points in initial_points:
         curve = THREE.CatmullRomCurve3.new(to_js(points))
@@ -1286,6 +1291,38 @@ def buttonfunctionclear():
 
     for visline in vislines:
         scene.remove(visline)
+
+    scene.add(geometry_mesh)
+
+    for handles in curve_handles:
+        for handle in handles:
+            handle.visible = True
+    
+    for curve_line in list_of_curves:
+        curve_line.visible = True
+
+    transform_controls.visible = True
+
+def buttonfunctionfin():
+    global points, folder1, folder2, folder3, folder4, folder5, folder6, gui
+
+    scene.remove(geometry_mesh)
+    for handles in curve_handles:
+        for handle in handles:
+            handle.visible = False
+
+    for curve_line in list_of_curves:
+        curve_line.visible = False
+
+    transform_controls.visible = False
+
+    folder1.close()
+    folder2.close()
+    folder3.close()
+    folder4.close()
+    folder5.close()
+    folder6.close()
+    gui.close()
     
 
 
@@ -1400,12 +1437,8 @@ def updatesurface(transparency ):
     surface = surface2
     geometry2 = THREE.ParametricGeometry.new(getPoints, 30,30)
 
-    meshplaneupdate = THREE.MeshPhongMaterial.new()
-    meshplaneupdate.side = 2
-    meshplaneupdate.transparent = True
-    meshplaneupdate.opacity = transparency
     
-    new_geometry_mesh = THREE.Mesh.new(geometry2, meshplaneupdate)
+    new_geometry_mesh = THREE.Mesh.new(geometry2, meshplane)
     scene.remove(geometry_mesh)
     geometry_mesh = new_geometry_mesh
     surfaces.append(geometry_mesh)
@@ -1429,13 +1462,6 @@ def update_linesa_on_surface(transparentlines):
         for l in vislines:
             scene.remove(l)
 
-
-    global linematerialfinal
-
-    linematerialfinal = THREE.LineBasicMaterial.new()
-    linematerialfinal.transparent = True
-    linematerialfinal.opacity = transparentlines
-    linematerialfinal.side = 2
         
 
     for pairs in baseshapelines:
