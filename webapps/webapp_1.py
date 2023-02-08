@@ -48,14 +48,51 @@ def main():
 
     # Set up the scene
     scene = THREE.Scene.new()
-    back_color = THREE.Color.new(0.1,0.1,0.1)
-    scene.background = back_color
     camera = THREE.PerspectiveCamera.new(-100, window.innerWidth/window.innerHeight, 0.4, 100)
     camera.position.z = -3
     camera.position.x = -4
     camera.position.y = -4
 
     scene.add(camera)
+
+    #controls
+    controls = THREE.OrbitControls.new(camera, renderer.domElement)
+    controls.target.set( 0, 0, 0 )
+    controls.damping = 0.2
+    controls.enablePan = False
+    controls.enableDamping = True
+    controls.maxDistance = 50
+
+    
+    #ground
+
+    #Set up Studio Scene
+    groundGeo = THREE.PlaneGeometry.new(5000,5000)
+    groundMat = THREE.MeshBasicMaterial.new ()
+    groundMat.color = THREE.Color.new("rgb(250,250,250)")
+
+    ground = THREE.Mesh.new(groundGeo, groundMat)
+    ground.position.y = - 33
+    ground.rotation.x = - math.pi / 2
+    ground.receiveShadow = True
+    scene.add( ground )
+
+    #Lighting
+    hemiLight = THREE.HemisphereLight.new( 0xffffff, 0x444444 )
+    hemiLight.position.set( 0, 100, 0 )
+    scene.add( hemiLight )
+
+    dirLight = THREE.DirectionalLight.new( 0xffffff )
+    dirLight.position.set( - 0, 40, 50 )
+    dirLight.castShadow = True
+    dirLight.shadow.camera.top = 50
+    dirLight.shadow.camera.bottom = - 25
+    dirLight.shadow.camera.left = - 25
+    dirLight.shadow.camera.right = 25
+    dirLight.shadow.camera.near = 0.1
+    dirLight.shadow.camera.far = 200
+    dirLight.shadow.mapSize.set( 1024, 1024 )
+    scene.add( dirLight )
 
     # Graphic Post Processing
     global composer
