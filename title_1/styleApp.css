@@ -326,7 +326,7 @@ img {
     border: 1px solid var(--main-col);
     border-radius: var(--brd-rad);
     padding: 5px;
-    width: 300px;
+    width: 200px;
     position: fixed;
     top: var(--dist-edge);
     left: var(--dist-edge);
