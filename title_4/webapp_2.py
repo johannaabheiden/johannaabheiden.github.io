@@ -40,6 +40,27 @@ def main():
     camera.position.y = 1
     camera.position.x = -4
 
+    #Set up Studio Scene
+    groundGeo = THREE.PlaneGeometry.new(5000,5000)
+    groundMat = THREE.MeshBasicMaterial.new ()
+    groundMat.color = THREE.Color.new("rgb(250,250,250)")
+
+    
+    ground = THREE.Mesh.new(groundGeo, groundMat)
+    ground.position.y = - 33
+    ground.rotation.x = - math.pi / 2
+    ground.receiveShadow = True
+    scene.add( ground )
+
+    
+    controls = THREE.OrbitControls.new(camera, renderer.domElement)
+    controls.target.set( 0, 0, 3 )
+    controls.damping = 0.2
+    controls.enablePan = False
+    controls.enableDamping = True
+    controls.maxDistance = 10
+
+
     # Set up lighting
     amb_light = THREE.AmbientLight.new(0xf0f0f0)
     scene.add(amb_light)
@@ -92,11 +113,11 @@ def main():
     global max_iterations, division
     max_iterations= geom_params.x
     division = geom_params.division
-
    
     #defintion of the system
     my_element_system = system(0,max_iterations,"X")
     draw_system(my_element_system)
+    
     
     render()
 
